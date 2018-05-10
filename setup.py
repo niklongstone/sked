@@ -59,7 +59,7 @@ setup(
     install_requires=['docopt', 'boto3', 'PyYAML'],
     extras_require={
         ':python_version in "2.6, 2.7"': ['mock'],
-        'test': ['coverage', 'pytest', 'pytest-cov'],
+        'test': ['coverage', 'pytest', 'pytest-cov', 'tox'],
     },
     entry_points={
         'console_scripts': [

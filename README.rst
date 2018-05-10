@@ -1,18 +1,20 @@
+
 Sked CLI
-=========
+========
 
 Configures `AWS Scheduled Scaling`_ for Amazon EC2 Auto Scaling based on Tags.
-You can Tag your EC2 instances and define in a config file various scaling profile.
-The rest is magic...
+
+You can Tag your EC2 instances and define in a config file the scaling profiles. The rest is magic...
 
 .. _AWS Scheduled Scaling: https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html
 
 Installation
 ------------
+``$ pip install sked``
 
-clone the repo and run: ``$ pip install -e .[test]``
-
-Usage::
+Usage
+-------
+::
 
   sked create [-c=<config_file>]
   sked delete [-c=<config_file>]
@@ -20,10 +22,12 @@ Usage::
   sked --version
 
 
-Examples::
+Examples
+--------
+::
 
-  sked create -c my_autoscaling.yml
-  sked delete -c my_autoscaling.yml
+  sked create -c my_schedule.yml
+  sked delete -c my_schedule.yml
 
 
 **If you omit the -c parameter, the cli by default tries to use a file called sked.yml.**
@@ -58,9 +62,22 @@ Configuration file sample
       - filter:
           tags:
             - tag: {key: Name, value: MyInstanceA}
-            - tag: {key: Name, value: MyInstanceB}
+            - tag: {key: Name, value: 'My Instance B'}
         schedule:
           - profile: small
             times:
               - start_time: 2018-03-01T00:00:00Z
               - start_time: 2018-04-01T00:00:00Z
+
+Additional Note
+---------------
+
+Sked doesn't store the state of the applied scheduled action. Everything is based upon the Yaml configuration file.
+
+If you want to use the delete command make sure you didn't change the Yaml configuration file in the meantime.
+
+For instance, the following workflow **will produce an error**:
+
+1. run ``sked create``
+2. change the ``sked.yml`` file
+3. run ``sked delete``
